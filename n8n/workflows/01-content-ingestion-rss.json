@@ -1,0 +1,114 @@
+{
+  "name": "01 - Content ingestion - RSS",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dc3689c6-fb69-4020-bd21-329261971b1d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://hnrss.org/frontpage",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f7b629be-c228-4cea-87d7-afcc00029c20",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1ebc35fd-886f-4bd0-a2e7-f58870d1e20a",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "5c55c197-2ee6-485b-8ac6-a54884bbd752",
+              "name": "url",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "ff16bfda-6ab4-402b-bbb8-6032b2a5e6bd",
+              "name": "source",
+              "value": "Hacker News",
+              "type": "string"
+            },
+            {
+              "id": "4d9c9dab-5bf1-44c9-b99d-b3161cd50649",
+              "name": "published_at",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            },
+            {
+              "id": "73bbbb43-0afe-4552-8705-95a8eb925d5f",
+              "name": "content",
+              "value": "={{ $json.contentSnippet || $json.content || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "3737a1c8-7e27-46c5-9d9d-6fcd4e2eb88e",
+      "name": "Normalize Content"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Normalize Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5ab44018-f365-418c-9716-9e3d4b27cf70",
+  "meta": {
+    "instanceId": "5ce2238c34564ca56789d91ab61d04e64d9ba050c32466b431cc44de01328dfc"
+  },
+  "nodeGroups": [],
+  "id": "OzNmIelDB2kGnWdO",
+  "tags": []
+}
